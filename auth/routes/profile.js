@@ -7,8 +7,23 @@ const auth = require("../middleware/auth");
 // @desc register profile to looged in user
 // @access private
 
-router.post("/", auth, (req, res) => {
-    res.json(req.user);
+router.post("/", auth, async (req, res) => {
+    try {
+        const { firstName, lastName, avatar, github, cohort } = req.body;
+        
+
+        let newProfile = await pool.query(
+            "INSERT into profile (aid, first_name, last_name, avatar, github, cohort) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
+            [req.user.id, firstName, lastName, avatar, github, cohort]
+        );
+
+        newProfile = newProfile.rows[0];
+        res.json(newProfile);
+        
+    } catch (error) {
+       console.error(error.message);
+       res.status(400).json({ errors: error }); 
+    }
 })
 
 //@route GET api/profiles/self
