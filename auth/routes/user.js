@@ -7,7 +7,7 @@ const secretKey = require("../config/default").secretOrKey;
 
 
 // @route POST /
-// @desc Regisster a new user account
+// @desc Register a new user account
 // @access public
 
 router.post("/", async (req, res) => {
