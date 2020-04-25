@@ -4,7 +4,7 @@ const pool = require("../db");
 const auth = require("../middleware/auth");
 
 //@route POST api/profiles
-// @desc register profile to looged in user
+// @desc register profile to logged in user
 // @access private
 
 router.post("/", auth, async (req, res) => {
@@ -39,5 +39,20 @@ router.post("/", auth, async (req, res) => {
 //@route GET api/profiles/self
 // @desc get profile data of the logged in user
 // @access private
+
+router.get(`/self/:id`, auth, async (req, res) => {
+    try {
+        const aid = req.params.id;
+        let profile = await pool.query("SELECT * FROM profile WHERE aid=$1", [aid]);
+        if (profile) {
+            profile = profile.rows[0];
+            return res.json(profile);
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).json({ errors: error });
+    }
+})
+
 
 module.exports = router;
