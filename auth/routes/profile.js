@@ -40,9 +40,9 @@ router.post("/", auth, async (req, res) => {
 // @desc get profile data of the logged in user
 // @access private
 
-router.get(`/self/:id`, auth, async (req, res) => {
+router.get(`/self/`, auth, async (req, res) => {
     try {
-        const aid = req.params.id;
+        const aid = req.user.id;
         let profile = await pool.query("SELECT * FROM profile WHERE aid=$1", [aid]);
         if (profile) {
             profile = profile.rows[0];
