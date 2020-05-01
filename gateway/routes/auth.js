@@ -9,8 +9,6 @@ const { authServer } = require("../config/defaults");
 router.post("/", async (req, res) => {
   try {
     let response;
-    // const token = req.header("x-auth-token");
-    let body = req.body.reqBody;
     switch (req.body.action) {
       case "registerUser":
         response = await registerUser(req.body.reqBody);
@@ -36,8 +34,6 @@ router.post("/", async (req, res) => {
 });
 
 const registerUser = async (body) => {
-
-  
   try {
     const response = await axios.post(`${authServer}/api/users/`, body);
     return response;
